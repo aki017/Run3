@@ -35,7 +35,7 @@ Game.Chara.prototype.update = function(map)
   }
   this.x += this.dx;
   this.y += this.dy;
-  console.log(this.y);
+  // console.log(this.y);
 }
 Game.Chara.prototype.draw = function(ctx, offset)
 {
@@ -90,3 +90,5 @@ InputManager = function()
   $(window).on("keyup", function(e){input.key[e.keyCode]=0});
 }
 input = new InputManager();
+
+
