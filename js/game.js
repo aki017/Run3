@@ -19,11 +19,12 @@ Game.Chara = function(x, y)
   this.dx = 0;
   this.dy = 0;
   this.speed = 0.05;
+  this.jumpHeight= 20;
 }
 Game.Chara.prototype.update = function(map)
 {
   this.dx += this.speed * ( -1*input.getkey(37) + 1*input.getkey(39));
-  this.dy += this.speed * ( -1*input.getkey(40) + 1*input.getkey(38));
+  // this.dy += this.speed * ( -1*input.getkey(40) + 1*input.getkey(38));
   this.dx = this.dx * 0.95;
   this.dy = this.dy * 0.95;
   if(map.get(this.x)<=this.y)
@@ -32,6 +33,7 @@ Game.Chara.prototype.update = function(map)
   }else
   {
     this.dy = 0;
+    if(input.getkey(32)>0)this.dy += this.jumpHeight;
     this.y = map.get(this.x);
   }
   this.x += this.dx;
