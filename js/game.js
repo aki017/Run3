@@ -18,11 +18,12 @@ Game.Chara = function(x, y)
   this.y = y;
   this.dx = 0;
   this.dy = 0;
+  this.speed = 0.05;
 }
 Game.Chara.prototype.update = function(map)
 {
-  this.dx += -1*input.key[37] + 1*input.key[39];
-  this.dy += -1*input.key[40] + 1*input.key[38];
+  this.dx += this.speed * ( -1*input.getkey(37) + 1*input.getkey(39));
+  this.dy += this.speed * ( -1*input.getkey(40) + 1*input.getkey(38));
   this.dx = this.dx * 0.95;
   this.dy = this.dy * 0.95;
   if(map.get(this.x)<=this.y)
@@ -76,6 +77,7 @@ Game.prototype.update = function()
 {
   // console.log("update");
   this.chara.update(this.map);
+  input.update();
   this.sx+=3;
   this.draw();
   this.frame++;
@@ -84,10 +86,19 @@ Game.prototype.update = function()
 
 InputManager = function()
 {
-  this.key = new Array(100);
-  for(i=0;i<100;i++)this.key[i]=0;
-  $(window).on("keydown", function(e){input.key[e.keyCode]=1});
-  $(window).on("keyup", function(e){input.key[e.keyCode]=0});
+  var key = new Array(100);
+  for(i=0;i<100;i++) key[i]=0;
+  this.keydown = function(i){ if(!key[i])key[i]=1; }
+  this.keyup = function(i){   key[i]=0; }
+  this.getkey = function(i){  return key[i]; }
+  this.update = function()
+  {
+    for(i=0;i<100;i++)
+      if(key[i])
+        key[i]++;
+  }
+  $(window).on("keydown", function(e){input.keydown(e.keyCode)});
+  $(window).on("keyup", function(e){input.keyup(e.keyCode)});
 }
 input = new InputManager();
 
