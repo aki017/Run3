@@ -40,7 +40,8 @@ Game.Chara.prototype.update = function(map)
 }
 Game.Chara.prototype.draw = function(ctx, offset)
 {
-  ctx.fillRect(this.x-offset, 480-this.y, 10, 10);
+  ctx.fillStyle = "rgb(0, 0, 255)";
+  ctx.fillRect(this.x-offset, 480-this.y, 30, -40);
 }
   
 Game.Map = function(len)
