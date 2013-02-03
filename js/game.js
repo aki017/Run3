@@ -9,8 +9,34 @@ Game = function(canvas){
     this.ctx = canvas.getContext("2d");
     this.frame = 0;
     this.sx = 0;
+    this.nextFrameFunc = this.title;
+
     this.update();
 }
+
+Game.prototype.title = function(){
+    ctx = this.ctx;
+    ctx.clearRect(0, 0, 640, 480);
+
+    ctx.font = "40pt TimesNewRoman";
+    ctx.fillText("Title", 100, 100);
+    ctx.fillText("push enter key", 100, 150);
+
+    input.update();
+    if(input.getkey(13) > 0){
+        this.nextFrameFunc = this.gmain;
+    }
+}
+Game.prototype.gmain = function(){
+    this.chara.update(this.map);
+    input.update();
+    this.sx+=3;
+    this.draw();
+    this.frame++;
+}
+Game.prototype.gameover = function(){
+}
+
 
 Game.Chara = function(game, x, y){
     var dx = 0;
@@ -81,11 +107,7 @@ Game.prototype.draw = function(){
 
 Game.prototype.update = function(){
     // console.log("update");
-    this.chara.update(this.map);
-    input.update();
-    this.sx+=3;
-    this.draw();
-    this.frame++;
+    this.nextFrameFunc();
     setTimeout(this.update.bind(this), 1000/this.FPS)
 }
 
