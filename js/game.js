@@ -20,12 +20,18 @@ Game.Chara = function(game, x, y){
 
     this.update = function(){
         var map = game.map;
-        
+
         dx += speed * ( -1*input.getkey(37) + 1*input.getkey(39));
         dx = dx * 0.95;
         x += dx;
-        if(x<game.sx) x = game.sx;
-        if(x>game.sx+640) x = game.sx+640;
+        if(x<game.sx){
+            x = game.sx;
+            dx = 3;
+        }
+        if(x>game.sx+640){
+            x = game.sx+640;
+            dx = 0;
+        }
 
         dy = dy * 0.95;
         if(map.get(x)<=y){
