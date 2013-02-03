@@ -4,7 +4,7 @@ $(function(){
 
 
 Game = function(canvas){
-  this.chara = new Game.Chara(100, 10);
+  this.chara = new Game.Chara(this, 100, 10);
   this.map = new Game.Map(10000);
   this.FPS = 60;
   this.ctx = canvas.getContext("2d");
@@ -12,50 +12,51 @@ Game = function(canvas){
   this.sx = 0;
   this.update();
 }
-Game.Chara = function(x, y)
+Game.Chara = function(game, x, y)
 {
-  this.x = x;
-  this.y = y;
-  this.dx = 0;
-  this.dy = 0;
-  this.speed = 0.05;
-  this.jumpHeight= 20;
-}
-Game.Chara.prototype.update = function(map)
-{
-  this.dx += this.speed * ( -1*input.getkey(37) + 1*input.getkey(39));
-  // this.dy += this.speed * ( -1*input.getkey(40) + 1*input.getkey(38));
-  this.dx = this.dx * 0.95;
-  this.dy = this.dy * 0.95;
-  if(map.get(this.x)<=this.y)
+  var dx = 0;
+  var dy = 0;
+  var speed = 0.05;
+  var jumpHeight= 20;
+
+  this.update = function()
   {
-    this.dy -= 1;
-  }else
-  {
-    this.dy = 0;
-    if(input.getkey(32)>0)this.dy += this.jumpHeight;
-    this.y = map.get(this.x);
+    var map = game.map;
+    
+    dx += speed * ( -1*input.getkey(37) + 1*input.getkey(39));
+    dx = dx * 0.95;
+    x += dx;
+
+    dy = dy * 0.95;
+    if(map.get(x)<=y)
+    {
+      dy -= 1;
+    }else
+    {
+      dy = 0;
+      if(input.getkey(32)>0)dy += jumpHeight;
+      y = map.get(x);
+    }
+    y += dy;
   }
-  this.x += this.dx;
-  this.y += this.dy;
-  // console.log(this.y);
+
+  this.draw = function()
+  {
+    var offset = game.sx;
+    game.ctx.fillStyle = "rgb(0, 0, 255)";
+    game.ctx.fillRect(x-offset, 480-y, 30, -40);
+  }
 }
-Game.Chara.prototype.draw = function(ctx, offset)
-{
-  ctx.fillStyle = "rgb(0, 0, 255)";
-  ctx.fillRect(this.x-offset, 480-this.y, 30, -40);
-}
-  
 Game.Map = function(len)
 {
-  this.len = len;
-  this._map = new Array(len);
+  var len = len;
+  var _map = new Array(len);
   for(i = 0;i<len;i++)
-    this._map[i] = ((i==0)?0:this._map[i-1]) + Math.sin(i*0.01);
-}
-Game.Map.prototype.get = function(i)
-{
-  return 100+0.5*this._map[~~i];
+    _map[i] = ((i==0)?0:_map[i-1]) + Math.sin(i*0.01);
+  this.get = function(i)
+  {
+    return 100+0.5*_map[~~i];
+  }
 }
 Game.prototype.draw = function()
 {
@@ -91,10 +92,10 @@ InputManager = function()
 {
   var key = new Array(100);
   for(i=0;i<100;i++) key[i]=0;
-  this.keydown = function(i){ if(!key[i])key[i]=1; }
-  this.keyup = function(i){   key[i]=0; }
-  this.getkey = function(i){  return key[i]; }
-  this.update = function()
+  this.keydown = function(i){ if(!key[i]) key[i] = 1; }
+  this.keyup   = function(i){             key[i] = 0; }
+  this.getkey  = function(i){ return key[i]; }
+  this.update  = function()
   {
     for(i=0;i<100;i++)
       if(key[i])
