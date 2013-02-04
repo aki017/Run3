@@ -4,13 +4,60 @@ $(function(){
 
 Game = function(canvas){
     this.chara = new Game.Chara(this, 100, 10);
-    this.map = new Game.Map(10000);
+    this.map = new Game.Map(1000);
     this.FPS = 60;
     this.ctx = canvas.getContext("2d");
     this.frame = 0;
     this.sx = 0;
+    this.nextFrameFunc = this.title;
+
     this.update();
 }
+
+Game.prototype.reset = function(){
+    this.chara = new Game.Chara(this, 100, 10);
+    this.map = new Game.Map(1000);
+    this.FPS = 60;
+    this.frame = 0;
+    this.sx = 0;
+    this.nextFrameFunc = this.title;
+}
+Game.prototype.title = function(){
+    ctx = this.ctx;
+    ctx.clearRect(0, 0, 640, 480);
+
+
+    ctx.font = "40pt TimesNewRoman";
+    ctx.fillText("Title", 100, 100);
+    ctx.fillText("push enter key", 100, 150);
+
+    input.update();
+    if(input.getkey(13) == 1){
+        this.nextFrameFunc = this.gmain;
+    }
+}
+Game.prototype.gmain = function(){
+    this.chara.update(this.map);
+    input.update();
+    this.sx+=3;
+    this.draw();
+    this.frame++;
+}
+Game.prototype.gameover = function(){
+    ctx = this.ctx;
+    ctx.clearRect(0, 0, 640, 480);
+
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.font = "40pt TimesNewRoman";
+    ctx.fillText("GameOver", 100, 100);
+    ctx.fillText("push enter key", 100, 150);
+
+    input.update();
+    if(input.getkey(13) == 1){
+        this.nextFrameFunc = this.reset;
+    }
+}
+
 
 Game.Chara = function(game, x, y){
     var dx = 0;
@@ -40,6 +87,10 @@ Game.Chara = function(game, x, y){
             dy = 0;
             if(input.getkey(32)>0)dy += jumpHeight;
             y = map.get(x);
+            // NaNになったらゲームオーバー扱いに
+            if(isNaN(y)){
+                game.nextFrameFunc = game.gameover;
+            }
         }
         y += dy;
     }
@@ -81,11 +132,7 @@ Game.prototype.draw = function(){
 
 Game.prototype.update = function(){
     // console.log("update");
-    this.chara.update(this.map);
-    input.update();
-    this.sx+=3;
-    this.draw();
-    this.frame++;
+    this.nextFrameFunc();
     setTimeout(this.update.bind(this), 1000/this.FPS)
 }
 
@@ -94,7 +141,7 @@ InputManager = function(){
     for(i=0;i<100;i++) key[i]=0;
     this.keydown = function(i){ if(!key[i]) key[i] = 1; }
     this.keyup   = function(i){             key[i] = 0; }
-    this.getkey  = function(i){ return key[i]; }
+    this.getkey  = function(i){ return key[i]-1; }
     this.update  = function(){
         for(i=0;i<100;i++){
             if(key[i]){
