@@ -65,6 +65,9 @@ Game.Chara = function(game, x, y){
     var speed = 0.05;
     var jumpHeight= 20;
 
+    this.jumpState = 0;
+    this.MAX_JUMP_COUNT = 2;
+
     this.update = function(){
         var map = game.map;
 
@@ -82,15 +85,35 @@ Game.Chara = function(game, x, y){
 
         dy = dy * 0.95;
         if(map.get(x)<=y){
+            if (this.MAX_JUMP_COUNT * 2 > this.jumpState){
+                console.log(this.jumpState);
+                console.log(this.MAX_JUMP_COUNT);
+                if (this.jumpState % 2 == 1){
+                    if(input.getkey(32)<=0){
+                        this.jumpState++;
+                    }
+                }else if (this.jumpState % 2 == 0){
+                    if(input.getkey(32)>0){
+                        dy = jumpHeight;
+                        this.jumpState++;
+                    }
+                }
+            }
             dy -= 1;
-        }else{
+        }else if (this.jumpState == 0){
             dy = 0;
-            if(input.getkey(32)>0)dy += jumpHeight;
+            if(input.getkey(32)>0){
+                dy += jumpHeight;
+                this.jumpState++;
+            }
+
             y = map.get(x);
             // NaNになったらゲームオーバー扱いに
             if(isNaN(y)){
                 game.nextFrameFunc = game.gameover;
             }
+        }else{
+            this.jumpState = 0;
         }
         y += dy;
     }
