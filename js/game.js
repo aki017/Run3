@@ -32,7 +32,7 @@ Game.prototype.title = function(){
     ctx.fillText("push enter key", 100, 150);
 
     input.update();
-    if(input.getkey(13) == 1){
+    if(input.getkey(KEY_ENTER) == 1){
         this.nextFrameFunc = this.gmain;
     }
 }
@@ -53,7 +53,7 @@ Game.prototype.gameover = function(){
     ctx.fillText("push enter key", 100, 150);
 
     input.update();
-    if(input.getkey(13) == 1){
+    if(input.getkey(KEY_ENTER) == 1){
         this.nextFrameFunc = this.reset;
     }
 }
@@ -71,7 +71,7 @@ Game.Chara = function(game, x, y){
     this.update = function(){
         var map = game.map;
 
-        dx += speed * ( -1*input.getkey(37) + 1*input.getkey(39));
+        dx += speed * ( -1*input.getkey(KEY_LEFT) + 1*input.getkey(KEY_RIGHT));
         dx = dx * 0.95;
         x += dx;
         if(x<game.sx){
@@ -89,11 +89,11 @@ Game.Chara = function(game, x, y){
                 console.log(this.jumpState);
                 console.log(this.MAX_JUMP_COUNT);
                 if (this.jumpState % 2 == 1){
-                    if(input.getkey(32)<=0){
+                    if(input.getkey(KEY_SPACE)<=0){
                         this.jumpState++;
                     }
                 }else if (this.jumpState % 2 == 0){
-                    if(input.getkey(32)>0){
+                    if(input.getkey(KEY_SPACE)>0){
                         dy = jumpHeight;
                         this.jumpState++;
                     }
@@ -102,7 +102,7 @@ Game.Chara = function(game, x, y){
             dy -= 1;
         }else if (this.jumpState == 0){
             dy = 0;
-            if(input.getkey(32)>0){
+            if(input.getkey(KEY_SPACE)>0){
                 dy += jumpHeight;
                 this.jumpState++;
             }
@@ -157,23 +157,6 @@ Game.prototype.update = function(){
     // console.log("update");
     this.nextFrameFunc();
     setTimeout(this.update.bind(this), 1000/this.FPS)
-}
-
-InputManager = function(){
-    var key = new Array(100);
-    for(i=0;i<100;i++) key[i]=0;
-    this.keydown = function(i){ if(!key[i]) key[i] = 1; }
-    this.keyup   = function(i){             key[i] = 0; }
-    this.getkey  = function(i){ return key[i]-1; }
-    this.update  = function(){
-        for(i=0;i<100;i++){
-            if(key[i]){
-                key[i]++;
-            }
-        }
-    }
-    $(window).on("keydown", function(e){input.keydown(e.keyCode)});
-    $(window).on("keyup", function(e){input.keyup(e.keyCode)});
 }
 
 input = new InputManager();
