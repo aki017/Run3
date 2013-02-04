@@ -4,11 +4,11 @@ $(function(){
 
 Game = function(canvas){
     this.chara = new Game.Chara(this, 100, 10);
-    this.map = new Game.Map(1000);
+    this.map = new Game.Map(100000);
     this.FPS = 60;
     this.ctx = canvas.getContext("2d");
     this.frame = 0;
-    this.sx = 0;
+    this.offset = 0;
     this.nextFrameFunc = this.title;
 
     this.update();
@@ -19,7 +19,7 @@ Game.prototype.reset = function(){
     this.map = new Game.Map(1000);
     this.FPS = 60;
     this.frame = 0;
-    this.sx = 0;
+    this.offset = 0;
     this.nextFrameFunc = this.title;
 }
 Game.prototype.title = function(){
@@ -39,7 +39,7 @@ Game.prototype.title = function(){
 Game.prototype.gmain = function(){
     this.chara.update(this.map);
     input.update();
-    this.sx+=3;
+    this.offset+=3;
     this.draw();
     this.frame++;
 }
@@ -74,20 +74,18 @@ Game.Chara = function(game, x, y){
         dx += speed * ( -1*input.getkey(KEY_LEFT) + 1*input.getkey(KEY_RIGHT));
         dx = dx * 0.95;
         x += dx;
-        if(x<game.sx){
-            x = game.sx;
+        if(x<game.offset){
+            x = game.offset;
             dx = 3;
         }
-        if(x>game.sx+640){
-            x = game.sx+640;
+        if(x>game.offset+640){
+            x = game.offset+640;
             dx = 0;
         }
 
         dy = dy * 0.95;
         if(map.get(x)<=y){
             if (this.MAX_JUMP_COUNT * 2 > this.jumpState){
-                console.log(this.jumpState);
-                console.log(this.MAX_JUMP_COUNT);
                 if (this.jumpState % 2 == 1){
                     if(input.getkey(KEY_SPACE)<=0){
                         this.jumpState++;
@@ -119,7 +117,7 @@ Game.Chara = function(game, x, y){
     }
 
     this.draw = function(){
-        var offset = game.sx;
+        var offset = game.offset;
         game.ctx.fillStyle = "rgb(0, 0, 255)";
         game.ctx.fillRect(x-offset, 480-y, 30, -40);
     }
@@ -136,25 +134,21 @@ Game.Map = function(len){
 }
 
 Game.prototype.draw = function(){
-    // console.log("draw");
     ctx = this.ctx;
     map = this.map;
     ctx.clearRect(0, 0, 640, 480);
     ctx.fillStyle = "rgb(0, 0, 1)";
     ctx.strokeStyle = "rgb(0, 0, 1)";
     for(i = 0;i<640;i++){
-        // ctx.fillRect(i, 0, i+1, map.get(i));
         ctx.beginPath();
         ctx.moveTo(i,  480);
-        ctx.lineTo(i,  480-map.get(this.sx+i));
+        ctx.lineTo(i,  480-map.get(this.offset+i));
         ctx.stroke();
     }
-    this.chara.draw(ctx, this.sx);
-    // console.log(this.sx);
+    this.chara.draw(ctx, this.offset);
 }
 
 Game.prototype.update = function(){
-    // console.log("update");
     this.nextFrameFunc();
     setTimeout(this.update.bind(this), 1000/this.FPS)
 }
