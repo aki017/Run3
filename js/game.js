@@ -3,22 +3,17 @@ $(function(){
 })
 
 Game = function(canvas){
-    this.chara = new Game.Chara(this, 100, 10);
-    this.map = new Game.Map(100000);
-    this.FPS = 60;
     this.ctx = canvas.getContext("2d");
-    this.frame = 0;
-    this.offset = 0;
-    this.nextFrameFunc = this.title;
     this.WIDTH = canvas.width;
     this.HEIGHT = canvas.height;
+    this.reset();
 
     this.update();
 }
 
 Game.prototype.reset = function(){
     this.chara = new Game.Chara(this, 100, 10);
-    this.map = new Game.Map(1000);
+    this.map = new Game.Map(100000);
     this.FPS = 60;
     this.frame = 0;
     this.offset = 0;
