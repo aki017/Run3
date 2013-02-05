@@ -78,13 +78,14 @@ Game.Chara = function(game, x, y){
         }
         if(x<game.offset+game.WIDTH*(1/5)){
             game.speed -= 0.01;
+            game.speed = game.speed > 0 ? game.speed : 0;
         }
         if(x>game.offset+game.WIDTH*(4/5)){
             game.speed += 0.01;
         }
         if(x>game.offset+game.WIDTH){
             x = game.offset+game.WIDTH;
-            dx = 0;
+            dx = game.speed;
         }
 
         dy = dy * 0.95;
