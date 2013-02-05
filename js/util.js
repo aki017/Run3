@@ -12,7 +12,7 @@ Util.Random = function()
     y = z;
     z = seed;
     seed = (seed^(seed>>>19))^(tmp^(tmp>>>8))
-    return seed;
+    return seed >>>0;
   }
   this.getseed = function(){
     return [x, y, z, seed];
