@@ -75,8 +75,8 @@ Game.Chara = function(game, x, y){
             x = game.offset;
             dx = 3;
         }
-        if(x>game.offset+this.WIDTH){
-            x = game.offset+this.WIDTH;
+        if(x>game.offset+game.WIDTH){
+            x = game.offset+game.WIDTH;
             dx = 0;
         }
 
