@@ -17,6 +17,7 @@ Game.prototype.reset = function(){
     this.FPS = 60;
     this.frame = 0;
     this.offset = 0;
+    this.speed = 3;
     this.nextFrameFunc = this.title;
 }
 Game.prototype.title = function(){
@@ -36,7 +37,7 @@ Game.prototype.title = function(){
 Game.prototype.gmain = function(){
     this.chara.update(this.map);
     input.update();
-    this.offset+=3;
+    this.offset+=this.speed;
     this.draw();
     this.frame++;
 }
@@ -73,7 +74,13 @@ Game.Chara = function(game, x, y){
         x += dx;
         if(x<game.offset){
             x = game.offset;
-            dx = 3;
+            dx = game.speed;
+        }
+        if(x<game.offset+game.WIDTH*(1/5)){
+            game.speed -= 0.01;
+        }
+        if(x>game.offset+game.WIDTH*(4/5)){
+            game.speed += 0.01;
         }
         if(x>game.offset+game.WIDTH){
             x = game.offset+game.WIDTH;
