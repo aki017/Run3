@@ -10,6 +10,8 @@ Game = function(canvas){
     this.frame = 0;
     this.offset = 0;
     this.nextFrameFunc = this.title;
+    this.WIDTH = canvas.width;
+    this.HEIGHT = canvas.height;
 
     this.update();
 }
@@ -24,7 +26,7 @@ Game.prototype.reset = function(){
 }
 Game.prototype.title = function(){
     ctx = this.ctx;
-    ctx.clearRect(0, 0, 640, 480);
+    ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
 
 
     ctx.font = "40pt TimesNewRoman";
@@ -45,7 +47,7 @@ Game.prototype.gmain = function(){
 }
 Game.prototype.gameover = function(){
     ctx = this.ctx;
-    ctx.clearRect(0, 0, 640, 480);
+    ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
 
     ctx.fillStyle = "rgb(0, 0, 0)";
     ctx.font = "40pt TimesNewRoman";
@@ -78,8 +80,8 @@ Game.Chara = function(game, x, y){
             x = game.offset;
             dx = 3;
         }
-        if(x>game.offset+640){
-            x = game.offset+640;
+        if(x>game.offset+this.WIDTH){
+            x = game.offset+this.WIDTH;
             dx = 0;
         }
 
@@ -119,7 +121,7 @@ Game.Chara = function(game, x, y){
     this.draw = function(){
         var offset = game.offset;
         game.ctx.fillStyle = "rgb(0, 0, 255)";
-        game.ctx.fillRect(x-offset, 480-y, 30, -40);
+        game.ctx.fillRect(x-offset, game.HEIGHT-y, 30, -40);
     }
 }
 
@@ -136,13 +138,13 @@ Game.Map = function(len){
 Game.prototype.draw = function(){
     ctx = this.ctx;
     map = this.map;
-    ctx.clearRect(0, 0, 640, 480);
+    ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
     ctx.fillStyle = "rgb(0, 0, 1)";
     ctx.strokeStyle = "rgb(0, 0, 1)";
-    for(i = 0;i<640;i++){
+    for(i = 0;i<this.WIDTH;i++){
         ctx.beginPath();
-        ctx.moveTo(i,  480);
-        ctx.lineTo(i,  480-map.get(this.offset+i));
+        ctx.moveTo(i,  this.HEIGHT);
+        ctx.lineTo(i,  this.HEIGHT-map.get(this.offset+i));
         ctx.stroke();
     }
     this.chara.draw(ctx, this.offset);
