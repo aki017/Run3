@@ -11,16 +11,68 @@ var KEY_RIGHT = 39;
 var KEY_DOWN  = 40;
 
 InputManager = function(){
-    var key = new Array(100);
-    for(i=0;i<100;i++) key[i]=0;
-    this.keydown = function(i){ if(!key[i]) key[i] = 1; }
-    this.keyup   = function(i){             key[i] = 0; }
-    this.getkey  = function(i){ return key[i]-1; }
+
+    var INPUT_BIT_LEFT = 1 << 0;
+    var INPUT_BIT_RIGHT = 1 << 1;
+    var INPUT_BIT_SPACE = 1 << 2;
+    var INPUT_BIT_ENTER = 1 << 3;
+
+    var inputbit = 0;
+    var nowInput = [];
+    nowInput.left = nowInput.right = nowInput.space = nowInput.enter = 0;
+    this.keydown = function(i){
+        switch(i){
+        case KEY_LEFT:
+            inputbit |= INPUT_BIT_LEFT;
+            break;
+        case KEY_RIGHT:
+            inputbit |= INPUT_BIT_RIGHT;
+            break;
+        case KEY_SPACE:
+            inputbit |= INPUT_BIT_SPACE;
+            break;
+        case KEY_ENTER:
+            inputbit |= INPUT_BIT_ENTER;
+            break;
+        }
+    }
+    this.keyup = function(i){
+        switch(i){
+        case KEY_LEFT:
+            inputbit &= (~INPUT_BIT_LEFT);
+            break;
+        case KEY_RIGHT:
+            inputbit &= (~INPUT_BIT_RIGHT);
+            break;
+        case KEY_SPACE:
+            inputbit &= (~INPUT_BIT_SPACE);
+            break;
+        case KEY_ENTER:
+            inputbit &= (~INPUT_BIT_ENTER);
+            break;
+        }
+    }
+    this.getkey  = function(){ return nowInput; }
     this.update  = function(){
-        for(i=0;i<100;i++){
-            if(key[i]){
-                key[i]++;
-            }
+        if(inputbit & INPUT_BIT_LEFT){
+            nowInput.left++;
+        }else{
+            nowInput.left = 0;
+        }
+        if(inputbit & INPUT_BIT_RIGHT){
+            nowInput.right++;
+        }else{
+            nowInput.right = 0;
+        }
+        if(inputbit & INPUT_BIT_SPACE){
+            nowInput.space++;
+        }else{
+            nowInput.space = 0;
+        }
+        if(inputbit & INPUT_BIT_ENTER){
+            nowInput.enter++;
+        }else{
+            nowInput.enter = 0;
         }
     }
     $(window).on("keydown", function(e){input.keydown(e.keyCode)});
