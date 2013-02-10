@@ -1,78 +1,35 @@
-
-var KEY_BS    = 8;
-var KEY_ENTER = 13;
-var KEY_SHIFT = 16;
-var KEY_CTRL  = 17;
-var KEY_ALT   = 18;
-var KEY_SPACE = 32;
-var KEY_LEFT  = 37;
-var KEY_UP    = 38;
-var KEY_RIGHT = 39;
-var KEY_DOWN  = 40;
-
 InputManager = function(){
+    var keyCodePair = {};
+    var nowInput    = {};
+    var bitNumber   = [];
 
-    var INPUT_BIT_LEFT = 1 << 0;
-    var INPUT_BIT_RIGHT = 1 << 1;
-    var INPUT_BIT_SPACE = 1 << 2;
-    var INPUT_BIT_ENTER = 1 << 3;
+    var keyNames    = "KEY_BS KEY_ENTER KEY_SHIFT KEY_CTRL KEY_ALT KEY_SPACE KEY_LEFT KEY_UP KEY_RIGHT KEY_DOWN".split(/ /);
+    var keyNumber   = [8, 13, 16, 17, 18, 32, 37, 38, 39, 40];
+
+    for (var i in keyNames)
+    {
+        keyCodePair[keyNames[i]] = keyNumber[i];
+        nowInput[keyNames[i]]    = 0;
+        bitNumber[keyNumber[i]]  = i
+    }
 
     var inputbit = 0;
-    var nowInput = [];
-    nowInput.left = nowInput.right = nowInput.space = nowInput.enter = 0;
     this.keydown = function(i){
-        switch(i){
-        case KEY_LEFT:
-            inputbit |= INPUT_BIT_LEFT;
-            break;
-        case KEY_RIGHT:
-            inputbit |= INPUT_BIT_RIGHT;
-            break;
-        case KEY_SPACE:
-            inputbit |= INPUT_BIT_SPACE;
-            break;
-        case KEY_ENTER:
-            inputbit |= INPUT_BIT_ENTER;
-            break;
-        }
+        inputbit |= 1 << bitNumber[i];
     }
-    this.keyup = function(i){
-        switch(i){
-        case KEY_LEFT:
-            inputbit &= (~INPUT_BIT_LEFT);
-            break;
-        case KEY_RIGHT:
-            inputbit &= (~INPUT_BIT_RIGHT);
-            break;
-        case KEY_SPACE:
-            inputbit &= (~INPUT_BIT_SPACE);
-            break;
-        case KEY_ENTER:
-            inputbit &= (~INPUT_BIT_ENTER);
-            break;
-        }
+    this.keyup   = function(i){
+        inputbit &= ~(1 << bitNumber[i]);
     }
     this.getkey  = function(){ return nowInput; }
     this.update  = function(){
-        if(inputbit & INPUT_BIT_LEFT){
-            nowInput.left++;
-        }else{
-            nowInput.left = 0;
-        }
-        if(inputbit & INPUT_BIT_RIGHT){
-            nowInput.right++;
-        }else{
-            nowInput.right = 0;
-        }
-        if(inputbit & INPUT_BIT_SPACE){
-            nowInput.space++;
-        }else{
-            nowInput.space = 0;
-        }
-        if(inputbit & INPUT_BIT_ENTER){
-            nowInput.enter++;
-        }else{
-            nowInput.enter = 0;
+        for(var i = 0; i < keyNumber.length ; i++ )
+        {
+            if(inputbit & 1 << bitNumber[keyNumber[i]])
+            {
+                nowInput[keyNumber[i]]++;
+            }else{
+                nowInput[keyNumber[i]]=0;
+            }
         }
     }
     $(window).on("keydown", function(e){input.keydown(e.keyCode)});
