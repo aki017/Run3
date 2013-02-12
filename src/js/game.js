@@ -30,7 +30,7 @@ Game.prototype.title = function(){
     ctx.fillText("push enter key", 100, 150);
 
     input.update();
-    if(input.getkey().enter == 1){
+    if(input.ispushed("KEY_ENTER") == 1){
         this.nextFrameFunc = this.gmain;
     }
 }
@@ -51,7 +51,7 @@ Game.prototype.gameover = function(){
     ctx.fillText("push enter key", 100, 150);
 
     input.update();
-    if(input.getkey().enter == 1){
+    if(input.ispushed("KEY_ENTER") == 1){
         this.nextFrameFunc = this.reset;
     }
 }
@@ -69,7 +69,7 @@ Game.Chara = function(game, x, y){
     this.update = function(){
         var map = game.map;
 
-        dx += speed * ( -1*input.getkey().left + 1*input.getkey().right);
+        dx += speed * ( -1*input.getframes("KEY_LEFT") + 1*input.getframes("KEY_RIGHT"));
         dx = dx * 0.95;
         x += dx;
         if(x<game.offset){
@@ -92,11 +92,11 @@ Game.Chara = function(game, x, y){
         if(map.get(x)<=y){
             if (this.MAX_JUMP_COUNT * 2 > this.jumpState){
                 if (this.jumpState % 2 == 1){
-                    if(input.getkey().space<=0){
+                    if(input.getframes("KEY_SPACE")<=0){
                         this.jumpState++;
                     }
                 }else if (this.jumpState % 2 == 0){
-                    if(input.getkey().space>0){
+                    if(input.getframes("KEY_SPACE")>0){
                         dy = jumpHeight;
                         this.jumpState++;
                     }
@@ -105,7 +105,7 @@ Game.Chara = function(game, x, y){
             dy -= 1;
         }else if (this.jumpState == 0){
             dy = 0;
-            if(input.getkey().space>0){
+            if(input.getframes("KEY_SPACE")>0){
                 dy += jumpHeight;
                 this.jumpState++;
             }
