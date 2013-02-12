@@ -30,6 +30,7 @@ InputManager = function(){
     }
     this.keyup = function(i){
         inputbit &= ~(1 << bitNumbers[i]);
+        nowInput[i] = 0;
     }
     this.getframes = function(type){
         if (type === null) 
