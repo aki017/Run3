@@ -57,14 +57,14 @@ describe("InputManager", function(){
 
     // first time using test
     // keydown + update test
-    tester("KEY_BS", 1);
+    tester(KEY_BS, 1);
 
     // second time using test
     // keydown only
-    tester("KEY_BS", 0);
+    tester(KEY_BS, 0);
 
     // third time using test
     // keydown + 100 update test
-    tester("KEY_BS", 100);
+    tester(KEY_BS, 100);
 });
 
