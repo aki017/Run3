@@ -1,14 +1,14 @@
 
-var KEY_BS = 8;
+var KEY_BS    = 8;
 var KEY_ENTER = 13;
 var KEY_SHIFT = 16;
-var KEY_CTRL = 17;
-var KEY_ALT = 18;
+var KEY_CTRL  = 17;
+var KEY_ALT   = 18;
 var KEY_SPACE = 32;
-var KEY_LEFT = 37;
-var KEY_UP = 38;
+var KEY_LEFT  = 37;
+var KEY_UP    = 38;
 var KEY_RIGHT = 39;
-var KEY_DOWN = 40;
+var KEY_DOWN  = 40;
 
 InputManager = function(){
     var self       = this;
