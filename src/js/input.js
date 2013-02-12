@@ -41,7 +41,7 @@ InputManager = function(){
             return nowInput[type];
     }
     this.ispushed = function(type){
-        return this.getframes(type) > 0;
+        return (inputbit & 1 << bitNumbers[type]) != 0;
     }
     this.update  = function(){
         for(var i = 0; i < keyNumbers.length ; i++ )
