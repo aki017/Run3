@@ -1,14 +1,6 @@
 /**
  * Spec for Map 
  */
-Map = function(len){
-    var len = len;
-    this.get = function(i){
-        if(i>=len || i<0) throw new RangeError( "Map length is [0-"+(len-1)+"], but arguments is "+i );
-        return 1;
-    }
-    this.getName = function(){return "testMap"};
-}
 describe("Map", function(){
     var MapList = {
         "testMap" : Map
