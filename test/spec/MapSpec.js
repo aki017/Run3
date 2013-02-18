@@ -2,9 +2,7 @@
  * Spec for Map 
  */
 describe("Map", function(){
-    var MapList = {
-        "testMap" : Map
-    }
+    var MapList = Map.getMapList();
 
     tester = function(MAP, len, name){
         var map  = new MAP(len);

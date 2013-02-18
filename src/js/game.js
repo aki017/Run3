@@ -13,7 +13,7 @@ Game = function(canvas){
 
 Game.prototype.reset = function(){
     this.chara = new Game.Chara(this, 100, 10);
-    this.map = new Game.Map(100000);
+    this.map = new Map.SinMap(100000);
     this.FPS = 60;
     this.frame = 0;
     this.offset = 0;
