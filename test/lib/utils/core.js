@@ -39,3 +39,4 @@ utils.core.waitfor = function(check, onTestPass, onTimeout, timeoutMs, freqMs) {
             }
         }, freqMs);
 };
+/* vim:set ts=4 sts=4 sw=4 tw=4: */

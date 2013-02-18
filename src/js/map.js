@@ -1,13 +1,13 @@
 Map = {};
 Map.getMapList = function(){
-  var list = {};
-  for(var i in Map){
-    if(i!="getMapList"){
-    var obj = Map[i];
-    list[(new obj(1)).getName()] = obj;
+    var list = {};
+    for(var i in Map){
+        if(i!="getMapList"){
+            var obj = Map[i];
+            list[(new obj(1)).getName()] = obj;
+        }
     }
-  }
-  return list;
+    return list;
 }
 Map.SimpleMap = function(len){
     var len = len;
@@ -28,3 +28,5 @@ Map.SinMap = function(len){
     }
     this.getName = function(){return "SinMap"};
 }
+
+/* vim:set ts=4 sts=4 sw=4 tw=4: */

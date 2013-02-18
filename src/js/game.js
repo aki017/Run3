@@ -159,3 +159,5 @@ Game.prototype.update = function(){
 }
 
 input = new InputManager();
+
+/* vim:set ts=4 sts=4 sw=4 tw=4: */

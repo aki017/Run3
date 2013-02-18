@@ -1,4 +1,3 @@
-
 var KEY_BS    = 8;
 var KEY_ENTER = 13;
 var KEY_SHIFT = 16;
@@ -38,7 +37,7 @@ InputManager = function(){
         if (typeof type != 'number')
             throw new Error("type must be number");
 
-            return nowInput[type];
+        return nowInput[type];
     }
     this.ispushed = function(type){
         return (inputbit & 1 << bitNumbers[type]) != 0;
@@ -57,3 +56,4 @@ InputManager = function(){
     $(window).on("keydown", function(e){ self.keydown(e.keyCode)});
     $(window).on("keyup",   function(e){ self.keyup(e.keyCode)  });
 }
+/* vim:set ts=4 sts=4 sw=4 tw=4: */
