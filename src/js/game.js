@@ -128,16 +128,6 @@ Game.Chara = function(game, x, y){
     }
 }
 
-Game.Map = function(len){
-    var len = len;
-    var _map = new Array(len);
-    for(i = 0;i<len;i++)
-        _map[i] = ((i==0)?0:_map[i-1]) + Math.sin(i*0.01);
-    this.get = function(i){
-        return 100+0.5*_map[~~i];
-    }
-}
-
 Game.prototype.draw = function(){
     ctx = this.ctx;
     map = this.map;
